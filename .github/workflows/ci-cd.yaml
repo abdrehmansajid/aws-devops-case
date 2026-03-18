@@ -37,7 +37,10 @@ jobs:
       - name: Tag Docker Image
         run: |
           docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
+      - name: Trigger ASG Instance Refresh
+        run: |
+          aws autoscaling start-instance-refresh \
+            --auto-scaling-group-name fastapi-devops-app-asg
       - name: Push Docker Image to ECR
         run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
